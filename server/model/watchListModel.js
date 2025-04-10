@@ -11,5 +11,5 @@ const WatchlistSchema = new mongoose.Schema({
         ref: "Movie" }
     ],
 }, { timestamps: true });
-
+ 
 module.exports = mongoose.model("Watchlist", WatchlistSchema);
