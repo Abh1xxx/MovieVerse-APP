@@ -34,7 +34,7 @@ const registerUser = async (req, res,next) => {
         const savedUser = await newUser.save();
         console.log("✅ User registered successfully:", savedUser);
 
-        res.status(201).json({ message: "User registered successfully", savedUser });
+        res.status(201).json({ success: true, message: "User registered successfully", savedUser });
     } catch (error) {
         console.error("❌ Error in registerUser:", error);
         next(error);
@@ -79,6 +79,7 @@ const loginUser = async (req, res) => {
         console.log("✅ Login successful for user:", user.name, "| ID:", user._id);
 
         res.status(200).json({ 
+            success: true,
             message: "Login successful", 
             token, 
             user: userObject 

@@ -4,11 +4,15 @@ require('dotenv').config()   //for .env file
 // const userRouter = require("./Routes/userRoutes");
 const apiRouter = require("./Routes");
 const app= express()
+const cors=require('cors')
 
 
 
 // Middleware
 app.use(express.json()); // To parse JSON body
+app.use(cors({
+    orgin:process.env.FRONTEND_URL
+}))
 
 
 // Connect to database
