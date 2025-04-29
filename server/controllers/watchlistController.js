@@ -28,7 +28,7 @@ const addToWatchlist = async (req, res, next) => {
       watchlist = await watchListModel.create({ userId, movies: [movieId] }); 
       console.log("✅ New watchlist created with movie");
     } else {
-      if (watchlist.movies.includes(movieId)) {
+      if (watchlist.movies.includes(movieId)) {//checking if the movie is already exist
         console.log("⚠️ Movie already exists in watchlist");
         return res.status(400).json({ success: false, message: "Movie already in watchlist" });
       }
@@ -70,7 +70,7 @@ const getWatchlist = async (req, res, next) => {
 
     if (!watchlist) {
       console.log("📭 No watchlist found for this user.");
-      return res.status(200).json({ success: true, totalMovies: 0, data: [] });
+      return res.status(200).json({ success: true, totalMovies: 0, watchlist: [] });
     }
 
     console.log("🎬 Watchlist found. Total movies:", watchlist.movies.length);
@@ -78,7 +78,7 @@ const getWatchlist = async (req, res, next) => {
     res.status(200).json({
       success: true,
       totalMovies: watchlist.movies.length,
-      data: watchlist.movies,
+      watchlist: watchlist.movies,
     });
   } catch (error) {
     console.error("❌ Error in getWatchlist:", error.message);

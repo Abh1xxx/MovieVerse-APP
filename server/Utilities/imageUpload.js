@@ -1,16 +1,16 @@
-const cloudinary=require("../config/cloudinary")
+const cloudinary = require("../config/cloudinary");
 
-const uploadToCloudinary = (filePath) => {
+const uploadToCloudinary = (filePath, folder = "Movies Poster") => {
     return new Promise((resolve, reject) => {
         cloudinary.uploader.upload(
             filePath,
-            { folder: 'Movies Poster' },
+            { folder: folder },
             (error, result) => {
-                if (error) return reject(error)
-                resolve(result.secure_url)
+                if (error) return reject(error);
+                resolve(result.secure_url);
             }
-        )
-    })
-}
+        );
+    });
+};
 
-module.exports = uploadToCloudinary
+module.exports = uploadToCloudinary;

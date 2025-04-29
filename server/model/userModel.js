@@ -1,3 +1,16 @@
+const defaultAvatars = [
+    "https://res.cloudinary.com/dvgz6hz6h/image/upload/v1745401876/avatar3_dua54m.jpg",
+    "https://res.cloudinary.com/dvgz6hz6h/image/upload/v1745401878/defalutAvatar_svvxyt.jpg",
+    "https://res.cloudinary.com/dvgz6hz6h/image/upload/v1745401875/avatar2_axvpfz.jpg"
+  ];
+  
+  // Randomly pick one avatar from the array
+  const getRandomAvatar = () => {
+    const randomIndex = Math.floor(Math.random() * defaultAvatars.length);
+    return defaultAvatars[randomIndex];
+  };
+
+
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
@@ -21,7 +34,8 @@ const UserSchema = new mongoose.Schema({
     },
     profilePic: { 
                 type: String, 
-                default: "c:\Users\Abhi\AppData\Local\Temp\title1.webp" }, // Store image URL or file path
+                default: getRandomAvatar() // Use the random avatar function          
+            },
     role: {
          type: String, 
          enum: ["user", "admin"],  // Admin or normal user

@@ -5,14 +5,16 @@ require('dotenv').config()   //for .env file
 const apiRouter = require("./Routes");
 const app= express()
 const cors=require('cors')
-
+const path = require("path");
 
 
 // Middleware
 app.use(express.json()); // To parse JSON body
 app.use(cors({
-    orgin:process.env.FRONTEND_URL
+    origin:process.env.FRONTEND_URL
 }))
+// Middleware to serve uploaded files
+app.use("/uploads", express.static(path.join(__dirname, "Uploads")));
 
 
 // Connect to database

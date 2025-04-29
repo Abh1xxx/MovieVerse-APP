@@ -1,11 +1,12 @@
-import React from 'react'
+import React from "react";
 import { Link } from "react-router-dom";
-import marvelGif from '../assets/marvel gifffffff.gif'
+import marvelGif from "../assets/marvel gifffffff.gif";
 
 function LandingPage() {
+  const isAuthenticated = localStorage.getItem("token");  // Check if user is authenticated
+
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center text-center p-8">
-      
       {/* Background GIF */}
       <img 
         src={marvelGif} 
@@ -23,23 +24,25 @@ function LandingPage() {
         </p>
 
         <div className="flex space-x-6 justify-center">
-          <Link 
-            to="/register" 
-            className="px-6 py-3 bg-cyan-500 text-gray-900 rounded-lg text-lg font-semibold hover:bg-cyan-400 transition duration-300"
-          >
-            Get Started
-          </Link>
-
-          <Link 
-            to="/home" 
-            className="px-6 py-3 border border-cyan-400 rounded-lg text-lg font-semibold hover:bg-cyan-400 hover:text-gray-900 transition duration-300"
-          >
-            Explore Movies
-          </Link>
+          {isAuthenticated ? (
+            <Link 
+              to="/movies" 
+              className="px-6 py-3 bg-cyan-500 text-gray-900 rounded-lg text-lg font-semibold hover:bg-cyan-400 transition duration-300"
+            >
+              Explore Movies
+            </Link>
+          ) : (
+            <Link 
+              to="/register" 
+              className="px-6 py-3 bg-cyan-500 text-gray-900 rounded-lg text-lg font-semibold hover:bg-cyan-400 transition duration-300"
+            >
+              Get Started
+            </Link>
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default LandingPage
+export default LandingPage;

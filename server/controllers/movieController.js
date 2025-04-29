@@ -69,7 +69,7 @@ const getMovieById = async (req, res, next) => {
             return next(error);
         }
         console.log(`🎞️ Movie Fetched: ${movie.title} (ID: ${req.params.id})`);
-        res.status(200).json(movie);
+        res.status(200).json({movie:movie});
     } catch (error) {
         console.error(`❌ Error fetching movie by ID (${req.params.id}):`, error.message);
         next(error);
@@ -94,7 +94,7 @@ const updateMovie = async (req, res, next) => {
         // 3. If a new image is uploaded
         if (req.file) {
             console.log("📤 New image uploaded:", req.file.filename);
-            const imageUrl = await uploadToCloudinary(req.file.path);
+            const imageUrl = await uploadToCloudinary(req.file.path,"Movies Poster");
             fs.unlinkSync(req.file.path); // delete local file
             updateData.posterUrl = imageUrl;
         }

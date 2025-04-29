@@ -14,5 +14,7 @@ v1Router.use("/admin",adminRouter)
 v1Router.use("/movies",movieRouter)
 v1Router.use("/reviews",reviewRouter)
 v1Router.use("/watchList",watchlistRouter)
+v1Router.use("/admin", adminRouter); 
 v1Router.use("/adminDashboard", adminDashboardRouter); 
+
 module.exports=v1Router

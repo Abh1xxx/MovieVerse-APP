@@ -1,5 +1,6 @@
 const reviewModel = require('../model/reviewModel');
 const movieModel = require('../model/movieModel');
+const { updateMovieAverageRating } = require('../Utilities/updateMovieAvgRating ');
 
 // ➕ Add review + rating
 // @route   POST /api/v1/review/:movieId
@@ -27,6 +28,10 @@ const addReview = async (req, res, next) => {
         // Create review
         const newReview = await reviewModel.create({ userId, movieId, comment, rating });
         console.log("✅ Review created:", newReview._id);
+
+        await updateMovieAverageRating(movieId);
+        console.log("✅ Movie average rating updated");
+
 
         res.status(201).json({ success: true, data: newReview });
 
@@ -85,6 +90,9 @@ const updateReview = async (req, res, next) => {
         await review.save();
         console.log("✅ Review updated");
 
+        await updateMovieAverageRating(review.movieId);
+        console.log("✅ Movie average rating updated");
+
         res.status(200).json({ success: true, message: "Review updated", data: review });
 
     } catch (error) {
@@ -118,6 +126,9 @@ const deleteReview = async (req, res, next) => {
         await reviewModel.findByIdAndDelete(reviewId);
         console.log("✅ Review deleted");
 
+        await updateMovieAverageRating(review.movieId);
+        console.log("✅ Movie average rating updated");
+
         res.status(200).json({ success: true, message: "Review deleted" });
 
     } catch (error) {
@@ -126,9 +137,31 @@ const deleteReview = async (req, res, next) => {
     }
 };
 
+// 👤 Get all reviews by the logged-in user
+// @route   GET /api/v1/review/user
+// @access  Private
+const getReviewsByUser = async (req, res, next) => {
+    try {
+        const userId = req.user;
+        console.log("📥 Fetching reviews by user:", userId);
+
+        const userReviews = await reviewModel.find({ userId })
+            .populate('movieId', 'title posterUrl') // if you want to show movie info along with review
+            .sort({ createdAt: -1 }); // optional: latest reviews first
+
+        console.log(`✅ Found ${userReviews.length} reviews by user`);
+
+        res.status(200).json({ success: true, count: userReviews.length, reviews: userReviews });
+    } catch (error) {
+        console.error("❌ Error in getReviewsByUser:", error.message);
+        next(error);
+    }
+};
+
 module.exports = {
     addReview,
     getReviewsByMovie,
     updateReview,
-    deleteReview
+    deleteReview,
+    getReviewsByUser
 };

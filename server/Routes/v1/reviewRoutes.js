@@ -7,7 +7,8 @@ const {
   addReview,
   getReviewsByMovie,
   updateReview,
-  deleteReview
+  deleteReview,
+  getReviewsByUser
 } = require('../../controllers/reviewController');
 
 // ➕ Add review + rating
@@ -31,5 +32,8 @@ reviewRouter.put(
 
 // ❌ Delete own review
 reviewRouter.delete('/deleteReview/:reviewId', authMiddleware, deleteReview);
+
+
+reviewRouter.get('/getAllUserRiview',authMiddleware,getReviewsByUser)
 
 module.exports = reviewRouter;

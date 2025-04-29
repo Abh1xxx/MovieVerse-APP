@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const userModel = require("../model/userModel");
 const { hashPassword, comparePassword } = require("../Utilities/passwordUtilities");
 const createToken = require("../Utilities/loginToken");
+const reviewModel = require("../model/reviewModel");
 
 
 // 👉 Manually Create a New Admin
@@ -46,6 +47,46 @@ const createAdminManually = async (req, res, next) => {
         next(error);
     }
 };
+
+// Create a user (by admin)
+const createUserByAdmin = async (req, res, next) => {
+    try {
+      const { name, email, password, role } = req.body;
+  
+      console.log("🆕 Admin creating user:", email);
+  
+      // Validate input
+      if (!name || !email || !password) {
+        return res.status(400).json({ message: "Name, email, and password are required" });
+      }
+  
+      const existingUser = await userModel.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({ message: "User with this email already exists" });
+      }
+  
+      const hashedPassword = await hashPassword(password);
+  
+      const newUser = new userModel({
+        name,
+        email,
+        password: hashedPassword,
+        role: role || "user", // Default to "user" if role not provided
+      });
+  
+      const savedUser = await newUser.save();
+  
+      console.log("✅ User created by admin:", savedUser.name);
+      const userObject = savedUser.toObject();
+      delete userObject.password;
+  
+      res.status(201).json({ message: "User created successfully", user: userObject });
+    } catch (error) {
+      console.error("❌ Error in createUserByAdmin:", error.message);
+      next(error);
+    }
+  };
+  
 
 //admin LOGIN
 const loginAdmin = async (req, res, next) => {
@@ -113,7 +154,7 @@ const getUserById = async (req, res, next) => {
             error.statusCode = 404;
             return next(error);
         }
-        res.status(200).json(user);
+        res.status(200).json({user:user});
     } catch (error) {
         console.error("❌ Error in getUserById:", error.message);
         next(error);
@@ -165,8 +206,41 @@ const deleteUserByAdmin = async (req, res, next) => {
         next(error);
     }
 };
+// Get all reviews
+const getAllReviews = async (req, res, next) => {
+  try {
+    console.log("🔍 Admin: Fetching all reviews...");
+    const reviews = await reviewModel
+      .find()
+      .populate("userId", "name email")
+      .populate("movieId", "title");
+    res.status(200).json({ totalReviews: reviews.length, reviews });
+  } catch (error) {
+    console.error("❌ Error in getAllReviews:", error.message);
+    next(error);
+  }
+};
 
 
+
+
+// Delete a review by admin
+const deleteReviewByAdmin = async (req, res, next) => {
+  try {
+    const reviewId = req.params.id;
+    console.log("🗑️ Admin deleting review:", reviewId);
+    const deletedReview = await reviewModel.findByIdAndDelete(reviewId);
+
+    if (!deletedReview) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    res.status(200).json({message: "Review deleted successfully" });
+  } catch (error) {
+    console.error("❌ Error in deleteReviewByAdmin:", error.message);
+    next(error);
+  }
+};
 
 module.exports = {
     getAllUsers,
@@ -175,4 +249,7 @@ module.exports = {
     updateUserByAdmin,
     deleteUserByAdmin,
     createAdminManually, // ⬅️ added this export
+    createUserByAdmin,
+    deleteReviewByAdmin,
+    getAllReviews
 };

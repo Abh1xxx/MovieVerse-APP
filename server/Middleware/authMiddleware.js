@@ -6,6 +6,7 @@ const authMiddleware = async (req, res, next) => {
         console.log("🔹 Auth Middleware Invoked"); // Log middleware initiation
 
         // Extracting the Authorization header from the request
+        // console.log(req.headers);
         
         const authHeader = req.headers.authorization;
         // console.log("📌 Authorization Header:", authHeader);
@@ -20,7 +21,7 @@ const authMiddleware = async (req, res, next) => {
             console.log("❌ No Auth Token Found");
             return res.json({ status: false, message: "No auth token" });
         }
-
+ 
         // Decoding and verifying the token using the secret key
         const decoded = jwt.verify(authToken, process.env.JWT_SECRET_KEY);
         // console.log("✅ Decoded Token Data:", decoded);

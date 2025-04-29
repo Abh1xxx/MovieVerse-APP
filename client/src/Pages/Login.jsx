@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import axios from "axios";
 import axiosInstance from "../axios/axiosInstance";
+// import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";  // ✅
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,9 +21,23 @@ const Login = () => {
     try {
       const response = await axiosInstance.post("/api/v1/user/login", formData);
       if (response.data.success) {
-        localStorage.setItem("token", response.data.token);
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+
+        // ✅ Decode the token to get the role
+        const decoded = jwtDecode(token);
+
         alert("✅ Login Successful!");
-        navigate("/User-Home"); // Redirect to home or dashboard
+        // console.log("decoded",decoded);
+        // output->decoded 
+        // Object { id: "67f4d06b453e1de7bff7c6fb", role: "admin", iat: 1745910627, exp: 1746774627 }
+        
+        // ✅ Navigate based on role
+        if (decoded.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/User-Home");
+        }
       } else {
         alert("❌ " + response.data.message);
       }
