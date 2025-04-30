@@ -6,7 +6,7 @@ const apiRouter = require("./Routes");
 const app= express()
 const cors=require('cors')
 const path = require("path");
-
+const serverless = require("serverless-http"); // ✅ Add this
 
 // Middleware
 app.use(express.json()); // To parse JSON body
