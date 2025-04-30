@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../axios/axiosInstance";
+import { toast } from "react-toastify";  // ✅ Import toast
 
 const Register = () => {
   const navigate = useNavigate();
@@ -11,27 +12,27 @@ const Register = () => {
   });
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-      const handleRegister = async (e) => {
-        e.preventDefault();
-        try {
-          const response = await axiosInstance.post("/api/v1/user/register", formData);
-          console.log(response.data);
-          
-          if (response.data.success) {
-            alert("✅ Registration Successful!");
-            navigate("/login");
-          } else {
-            alert("❌ " + response.data.message);
-          }
-        } catch (error) {
-          console.error("❌ Error:", error.message);
-          alert("Something went wrong. Please try again.");
-        }
-      };
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.post("/api/v1/user/register", formData);
+
+      if (response.data.success) {
+        toast.success("✅ Registration Successful!");
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000); // delay for user to see the toast
+      } else {
+        toast.error("❌ " + response.data.message);
+      }
+    } catch (error) {
+      console.error("❌ Error:", error.message);
+      toast.error("Something went wrong. Please try again.");
+    }
+  };
 
   return (
     <div className="bg-gray-900 text-white min-h-screen flex items-center justify-center">

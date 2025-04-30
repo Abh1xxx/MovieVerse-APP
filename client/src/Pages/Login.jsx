@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../axios/axiosInstance";
-// import jwt_decode from "jwt-decode";
-import { jwtDecode } from "jwt-decode";  // ✅
-
+import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";  // ✅ Add toast
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,26 +23,22 @@ const Login = () => {
         const token = response.data.token;
         localStorage.setItem("token", token);
 
-        // ✅ Decode the token to get the role
         const decoded = jwtDecode(token);
+        toast.success("Login Successful!");
 
-        alert("✅ Login Successful!");
-        // console.log("decoded",decoded);
-        // output->decoded 
-        // Object { id: "67f4d06b453e1de7bff7c6fb", role: "admin", iat: 1745910627, exp: 1746774627 }
-        
-        // ✅ Navigate based on role
-        if (decoded.role === "admin") {
-          navigate("/admin");
-        } else {
-          navigate("/User-Home");
-        }
+        setTimeout(() => {
+          if (decoded.role === "admin") {
+            navigate("/admin");
+          } else {
+            navigate("/User-Home");
+          }
+        }, 1000); // Delay navigation to let the toast show
       } else {
-        alert("❌ " + response.data.message);
+        toast.error("❌ " + response.data.message);
       }
     } catch (error) {
       console.error("❌ Login Error:", error.message);
-      alert("❌ Login failed. Please try again.");
+      toast.error("❌ Login failed. Please try again.");
     }
   };
 

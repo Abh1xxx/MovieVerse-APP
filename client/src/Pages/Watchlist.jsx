@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../axios/axiosInstance";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";  // ✅ Import toast
 
 function Watchlist() {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ function Watchlist() {
       } catch (error) {
         console.error("❌ Error fetching watchlist:", error);
         setError("Failed to load your watchlist. Please try again.");
+        toast.error("❌ Failed to load watchlist. Please try again.");  // ✅ Add error toast
       } finally {
         setLoading(false);
       }
@@ -57,12 +59,17 @@ function Watchlist() {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log("🗑️ Removed movie:", response.data);
+      
+      // Show success toast
+      toast.success("Movie removed from watchlist!");
+
       // Remove the movie from the watchlist state
       setWatchlist((prevWatchlist) => {
         return prevWatchlist.filter((movie) => movie._id !== movieId);
       });
     } catch (error) {
       console.error("❌ Error removing movie:", error);
+      toast.error("❌ Failed to remove movie. Please try again.");
     }
   };
 
