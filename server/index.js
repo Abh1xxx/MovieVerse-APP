@@ -11,8 +11,8 @@ const serverless = require("serverless-http"); // ✅ Add this
 // Middleware
 app.use(express.json()); // To parse JSON body
 app.use(cors({
-    origin:process.env.FRONTEND_URL
-    // origin: "*"
+    // origin:process.env.FRONTEND_URL
+    origin: "*"
 }))
 // Middleware to serve uploaded files
 app.use("/uploads", express.static(path.join(__dirname, "Uploads")));
