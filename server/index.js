@@ -41,13 +41,17 @@ app.use((error, req, res, next) => {
 });
 
 
-// Start the Server
-app.listen(process.env.PORT, (error) => {
-    if (error) {
-        console.error("❌ Server error: ", error);
-    } else {
-        console.log("--------------------------------------------------");
-        console.log(`🚀 Server is running --> http://localhost:${process.env.PORT}`);
-        console.log("--------------------------------------------------");
-    }
-});
+// // Start the Server
+// 🔥 REMOVE app.listen() — it will crash your Vercel Serverless Function.
+// app.listen(process.env.PORT, (error) => {
+//     if (error) {
+//         console.error("❌ Server error: ", error);
+//     } else {
+//         console.log("--------------------------------------------------");
+//         console.log(`🚀 Server is running --> http://localhost:${process.env.PORT}`);
+//         console.log("--------------------------------------------------");
+//     }
+// });
+
+module.exports = app;
+module.exports.handler = serverless(app);
