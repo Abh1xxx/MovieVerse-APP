@@ -1,6 +1,8 @@
 const movieModel = require("../model/movieModel");
 const uploadToCloudinary = require("../utilities/imageUpload");
-const fs = require("fs");
+// const fs = require("fs");
+const fs = require("fs/promises");
+
 
 // @desc    Create a new movie
 // @route   POST /api/v1/movies/create
@@ -95,7 +97,8 @@ const updateMovie = async (req, res, next) => {
         if (req.file) {
             console.log("📤 New image uploaded:", req.file.filename);
             const imageUrl = await uploadToCloudinary(req.file.path,"Movies Poster");
-            fs.unlinkSync(req.file.path); // delete local file
+            // fs.unlink(req.file.path); // delete local file
+            await  fs.unlink(req.file.path); 
             updateData.posterUrl = imageUrl;
         }
 
