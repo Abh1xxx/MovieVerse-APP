@@ -14,8 +14,6 @@ app.use(cors({
     // origin:process.env.FRONTEND_URL
     origin: "*"
 }))
-// Middleware to serve uploaded files
-app.use("/uploads", express.static(path.join(__dirname, "Uploads")));
 
 
 // Connect to database
