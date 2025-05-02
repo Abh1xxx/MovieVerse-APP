@@ -61,7 +61,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const dotenv = require("dotenv");
-const connectDB = require("./config/db"); // your DB connection
+const { dbConnection } = require("./config/dbConnection");
 const movieRoutes = require("./routes/v1/movieRoutes"); // example route
 // Add your other imports (userRoutes, reviewRoutes, etc.)
 
@@ -71,7 +71,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Connect to MongoDB
-connectDB();
+dbConnection();
 
 // Your routes
 app.use("/api/v1/movies", movieRoutes);
