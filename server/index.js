@@ -103,7 +103,16 @@ app.use(cors({
 }));
 
 // Connect to database
-dbConnection();
+// dbConnection();
+app.use(async (req, res, next) => {
+    try {
+      await dbConnection();
+      next();
+    } catch (error) {
+      next(error);
+    }
+  });
+  
 
 // Health Check Route
 app.get("/", (req, res) => {
