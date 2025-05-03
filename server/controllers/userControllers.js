@@ -6,7 +6,7 @@ const {
   hashPassword,
   comparePassword,
 } = require("../Utilities/passwordUtilities");
-const uploadToCloudinary = require("../utilities/imageUpload");
+const uploadToCloudinary = require("../Utilities/imageUpload");
 // Register a new user
 const registerUser = async (req, res, next) => {
   try {
