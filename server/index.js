@@ -124,4 +124,4 @@ app.use((error, req, res, next) => {
 });
 
 // Wrap the app for serverless functions
-module.exports.handler = serverless(app);
+module.exports = serverless(app); 
