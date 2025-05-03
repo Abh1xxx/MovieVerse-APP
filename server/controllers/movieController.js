@@ -1,5 +1,5 @@
 const movieModel = require("../model/movieModel");
-const uploadToCloudinary = require("../utilities/imageUpload");
+const uploadToCloudinary = require("../Utilities/imageUpload");
 // const fs = require("fs");
 const fs = require("fs/promises");
 
