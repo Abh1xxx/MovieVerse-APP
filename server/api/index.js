@@ -87,11 +87,13 @@
 
 
 const express = require("express");
-const { dbConnection } = require("./config/dbConnection");
+
 require('dotenv').config(); // For .env file
-const apiRouter = require("./Routes");
+
 const cors = require("cors");
 const serverless = require("serverless-http"); // ✅ Required for Vercel deployment
+const { dbConnection } = require("../config/dbConnection");
+const apiRouter = require("../Routes");
 
 const app = express();
 
