@@ -7,7 +7,7 @@ const {
   removeFromWatchlist
 } = require("../../controllers/watchlistController");
 
-const { authMiddleware } = require("../../middleware/authMiddleware");
+const { authMiddleware } = require("../../Middleware/authMiddleware");
 
 // ➕ Add movie to watchlist
 watchlistRouter.post("/addToWatchlist", authMiddleware, addToWatchlist);

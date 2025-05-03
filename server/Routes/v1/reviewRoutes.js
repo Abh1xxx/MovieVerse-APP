@@ -1,8 +1,8 @@
 const express = require('express');
 const reviewRouter = express.Router();
 
-const { authMiddleware } = require('../../middleware/authMiddleware');
-const { fieldsValidation } = require('../../middleware/fieldsValidation');
+const { authMiddleware } = require('../../Middleware/authMiddleware');
+const { fieldsValidation } = require('../../Middleware/fieldsValidation');
 const {
   addReview,
   getReviewsByMovie,
