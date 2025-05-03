@@ -1,5 +1,6 @@
 const movieModel = require("../model/movieModel");
-const watchListModel = require("../model/watchlistModel");
+const watchListModel = require("../model/watchListModel");
+
 
 // ➕ Add movie to user's watchlist
 const addToWatchlist = async (req, res, next) => {
