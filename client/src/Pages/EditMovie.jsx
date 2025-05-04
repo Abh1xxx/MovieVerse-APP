@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
+import axiosInstance from "../axios/axiosInstance";
 
 const EditMovie = () => {
   const { movieId } = useParams();
@@ -18,7 +19,7 @@ const EditMovie = () => {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const res = await axios.get(`http://localhost:4999/api/v1/movies/getMovieById/${movieId}`);
+        const res = await axiosInstance.get(`/api/v1/movies/getMovieById/${movieId}`);
         const { title, genre, posterUrl, releaseDate, description } = res.data.movie;
         setMovie(res.data.movie);
         setTitle(title);
@@ -47,7 +48,7 @@ const EditMovie = () => {
         formData.append("image", imageFile);
       }
 
-      await axios.put(`http://localhost:4999/api/v1/movies/update/${movieId}`, formData, {
+      await axiosInstance.put(`/api/v1/movies/update/${movieId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

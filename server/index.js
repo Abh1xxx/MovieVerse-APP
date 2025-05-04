@@ -86,53 +86,132 @@
 // module.exports = app;
 
 
-const express = require("express");
 
-require('dotenv').config(); // For .env file
 
-const cors = require("cors");
-const serverless = require("serverless-http"); // ✅ Required for Vercel deployment
-const { dbConnection } = require("../config/dbConnection");
-const apiRouter = require("../Routes");
 
-const app = express();
+// const express = require("express");
+// const cors = require("cors");
+// const serverless = require("serverless-http"); // ✅ Required for Vercel deployment
+// const { dbConnection } = require("../config/dbConnection");
+// const apiRouter = require("../Routes");
+// require('dotenv').config(); // For .env file
+
+// const app = express();
+
+// // Middleware
+// app.use(express.json()); // To parse JSON body
+// app.use(cors({
+//     // origin: process.env.FRONTEND_URL  // Optionally configure your frontend URL here
+//     origin: "*", // Allow all origins
+// }));
+
+// // Connect to database
+// dbConnection();
+// // app.use(async (req, res, next) => {
+// //     try {
+// //       await dbConnection();
+// //       next();
+// //     } catch (error) {
+// //       next(error);
+// //     }
+// //   });
+  
+
+// // Health Check Route
+// app.get("/", (req, res) => {
+//     console.log("💡 Health check hit");
+//     res.send("✅ Server is working correctly!");
+// });
+
+// // API Routes
+// app.use('/api', apiRouter);
+// console.log("📦 Routes loaded under /api");
+
+// // Global Error Handler Middleware
+// app.use((error, req, res, next) => {
+//     const statusCode = error.statusCode || 500;
+//     const errormessage = error.message || "Internal Server Error";
+//     console.error("🔥 Global Error Handler:", errormessage);
+//     res.status(statusCode).json({ error: errormessage });
+// });
+
+// // Wrap the app for serverless functions
+// module.exports = serverless(app); 
+
+
+
+
+
+const express= require("express");
+const { dbConnection } = require("./config/dbConnection");
+require('dotenv').config()   //for .env file
+// const userRouter = require("./Routes/userRoutes");
+const apiRouter = require("./Routes");
+const app= express()
+const cors=require('cors')
+
+
+const path = require("path");
 
 // Middleware
 app.use(express.json()); // To parse JSON body
 app.use(cors({
-    // origin: process.env.FRONTEND_URL  // Optionally configure your frontend URL here
-    origin: "*", // Allow all origins
-}));
+    origin:process.env.FRONTEND_URL 
+    // origin:"*"
+}))
+
 
 // Connect to database
-// dbConnection();
-app.use(async (req, res, next) => {
-    try {
-      await dbConnection();
-      next();
-    } catch (error) {
-      next(error);
-    }
-  });
-  
+dbConnection()
 
 // Health Check Route
 app.get("/", (req, res) => {
-    console.log("💡 Health check hit");
-    res.send("✅ Server is working correctly!");
+ 
+  console.log("💡 Health check hit");
+
+  res.json("✅ Server is working correctly!");
+
 });
+
+
 
 // API Routes
+
 app.use('/api', apiRouter);
-console.log("📦 Routes loaded under /api");
 
 // Global Error Handler Middleware
+
 app.use((error, req, res, next) => {
-    const statusCode = error.statusCode || 500;
-    const errormessage = error.message || "Internal Server Error";
-    console.error("🔥 Global Error Handler:", errormessage);
-    res.status(statusCode).json({ error: errormessage });
+
+  const statusCode = error.statusCode || 500;
+
+  const errormessage = error.message || "Internal Server Error";
+
+  console.error("🔥 Global Error Handler:", errormessage);
+
+  res.status(statusCode).json({ error: errormessage });
+
 });
 
-// Wrap the app for serverless functions
-module.exports = serverless(app); 
+
+
+
+
+// Start the Server
+
+app.listen(process.env.PORT, (error) => {
+
+  if (error) {
+
+      console.error("❌ Server error: ", error);
+
+  } else {
+
+      console.log("--------------------------------------------------");
+
+      console.log(`🚀 Server is running --> http://localhost:${process.env.PORT}`);
+
+      console.log("--------------------------------------------------");
+
+  }
+})
