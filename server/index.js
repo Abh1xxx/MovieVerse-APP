@@ -156,8 +156,9 @@ const path = require("path");
 // Middleware
 app.use(express.json()); // To parse JSON body
 app.use(cors({
-    origin:process.env.FRONTEND_URL 
+    // origin:process.env.FRONTEND_URL 
     // origin:"*"
+    origin:"https://movie-verse-app-c4yp.vercel.app"
 }))
 
 
