@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import axiosInstance from "../axios/axiosInstance";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -13,8 +14,8 @@ const Header = () => {
     const fetchUserProfile = async () => {
       if (!token) return;
       try {
-        const res = await axios.get(
-          "http://localhost:4999/api/v1/user/profile",
+        const res = await axiosInstance.get(
+          "/api/v1/user/profile",
           {
             headers: {
               Authorization: `Bearer ${token}`,
